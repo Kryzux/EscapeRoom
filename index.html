@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Music Visualizer</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Code Editor</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>YouTube Music Visualizer</h1>
-        <input type="text" id="youtube-url" placeholder="Paste YouTube URL here" />
-        <button id="load-video">Load Video</button>
+  <header>
+    <h1>Live Code Editor</h1>
+  </header>
 
-        <div id="video-container">
-            <div id="player"></div>
-        </div>
-
-        <canvas id="visualizer"></canvas>
+  <main>
+    <div id="editor-container">
+      <textarea id="html-editor" placeholder="Write HTML here..."></textarea>
+      <textarea id="css-editor" placeholder="Write CSS here..."></textarea>
+      <textarea id="js-editor" placeholder="Write JavaScript here..."></textarea>
     </div>
+    <button id="run-btn">Run Code</button>
+    <iframe id="output" title="Output Window"></iframe>
+  </main>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="script.js"></script>
+  <footer>
+    <p>Built with HTML, CSS, and JavaScript</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
