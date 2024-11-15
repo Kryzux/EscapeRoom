@@ -1,78 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Music Visualizer</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #111;
-      margin: 0;
-      flex-direction: column;
-      color: white;
-    }
-
-    #music-container {
-      margin-top: 20px;
-      width: 100%;
-      max-width: 600px;
-      height: 400px;
-    }
-
-    #visualizer {
-      width: 100%;
-      height: 100%;
-      background-color: #222;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    canvas {
-      background-color: black;
-      display: block;
-    }
-
-    input[type="text"] {
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 10px;
-      width: 300px;
-      border: 2px solid #444;
-      color: white;
-      background-color: #333;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #444;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Music Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="container">
+        <h1>YouTube Music Visualizer</h1>
+        <input type="text" id="youtube-url" placeholder="Paste YouTube URL here" />
+        <button id="load-video">Load Video</button>
 
-  <h1>YouTube Music Visualizer</h1>
-  <input type="text" id="youtube-link" placeholder="Paste YouTube music link here">
-  <button id="load-music">Load Music</button>
+        <div id="video-container">
+            <div id="player"></div>
+        </div>
 
-  <div id="music-container">
-    <div id="visualizer">
-      <canvas id="visualizationCanvas"></canvas>
+        <canvas id="visualizer"></canvas>
     </div>
-  </div>
 
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@vimeo/player"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
 </body>
 </html>
