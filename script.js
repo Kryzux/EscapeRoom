@@ -1,59 +1,48 @@
-// Initialize CodeMirror instances for HTML, CSS, and JavaScript
-const htmlEditor = CodeMirror.fromTextArea(document.getElementById('htmlEditor'), {
-    mode: 'xml',
-    theme: 'default',
+// Initialize CodeMirror instances
+const htmlEditor = CodeMirror.fromTextArea(document.getElementById("htmlEditor"), {
+    mode: "xml",
     lineNumbers: true,
-    tabSize: 2,
+    autoCloseBrackets: true,
+    theme: "default",
 });
 
-const cssEditor = CodeMirror.fromTextArea(document.getElementById('cssEditor'), {
-    mode: 'css',
-    theme: 'default',
+const cssEditor = CodeMirror.fromTextArea(document.getElementById("cssEditor"), {
+    mode: "css",
     lineNumbers: true,
-    tabSize: 2,
+    autoCloseBrackets: true,
+    theme: "default",
 });
 
-const jsEditor = CodeMirror.fromTextArea(document.getElementById('jsEditor'), {
-    mode: 'javascript',
-    theme: 'default',
+const jsEditor = CodeMirror.fromTextArea(document.getElementById("jsEditor"), {
+    mode: "javascript",
     lineNumbers: true,
-    tabSize: 2,
+    autoCloseBrackets: true,
+    theme: "default",
 });
 
-// Store references to the editors
 const editors = { htmlEditor, cssEditor, jsEditor };
 
-// Initialize first editor as active
-htmlEditor.getWrapperElement().classList.add('active');
+// Tabs Handling
+document.querySelectorAll(".tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
 
-// Handle tab switching
-document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        // Set active tab
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        // Show the corresponding editor
-        const editorId = tab.getAttribute('data-editor');
-        Object.keys(editors).forEach(key => {
-            const editor = editors[key];
-            if (key === editorId) {
-                editor.getWrapperElement().classList.add('active');
-                editor.refresh(); // Ensure editor updates its layout
-            } else {
-                editor.getWrapperElement().classList.remove('active');
-            }
+        const editorId = tab.getAttribute("data-editor");
+        Object.keys(editors).forEach((key) => {
+            editors[key].getWrapperElement().style.display = key === editorId ? "block" : "none";
+            editors[key].refresh();
         });
     });
 });
 
-// Function to run the combined code
+// Run Code Functionality
 function runCode() {
     const htmlCode = htmlEditor.getValue();
     const cssCode = cssEditor.getValue();
     const jsCode = jsEditor.getValue();
 
-    const iframe = document.getElementById('sandbox');
+    const iframe = document.getElementById("sandbox");
     const doc = iframe.contentDocument || iframe.contentWindow.document;
 
     doc.open();
@@ -69,4 +58,79 @@ function runCode() {
         </html>
     `);
     doc.close();
+}
+
+// Save Code to Local Storage
+function saveCode() {
+    localStorage.setItem("htmlCode", htmlEditor.getValue());
+    localStorage.setItem("cssCode", cssEditor.getValue());
+    localStorage.setItem("jsCode", jsEditor.getValue());
+    alert("Code saved successfully!");
+}
+
+// Load Code from Local Storage
+function loadCode() {
+    htmlEditor.setValue(localStorage.getItem("htmlCode") || "");
+    cssEditor.setValue(localStorage.getItem("cssCode") || "");
+    jsEditor.setValue(localStorage.getItem("jsCode") || "");
+    alert("Code loaded successfully!");
+}
+
+// Export Code as File
+function exportCode() {
+    const blob = new Blob(
+        [
+            "<html>\n<head>\n<style>\n",
+            cssEditor.getValue(),
+            "\n</style>\n</head>\n<body>\n",
+            htmlEditor.getValue(),
+            "\n<script>\n",
+            jsEditor.getValue(),
+            "\n</script>\n</body>\n</html>",
+        ],
+        { type: "text/html" }
+    );
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "index.html";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// Theme Switching
+function changeTheme() {
+    const theme = document.getElementById("themeSelector").value;
+    Object.values(editors).forEach((editor) => editor.setOption("theme", theme));
+}
+
+// Fullscreen Window for Running Code
+function togglePreviewFullscreen() {
+    // Get the code from editors
+    const htmlCode = htmlEditor.getValue();
+    const cssCode = cssEditor.getValue();
+    const jsCode = jsEditor.getValue();
+
+    // Create a new window
+    const fullscreenWindow = window.open('', '', 'width=100%, height=100%, resizable=yes, fullscreen=yes');
+
+    fullscreenWindow.document.open();
+    fullscreenWindow.document.write(`
+        <html>
+            <head>
+                <style>
+                    * { margin: 0; padding: 0; box-sizing: border-box; }
+                    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+                    ${cssCode}
+                </style>
+            </head>
+            <body>
+                ${htmlCode}
+                <script>
+                    ${jsCode}
+                </script>
+            </body>
+        </html>
+    `);
+    fullscreenWindow.document.close();
 }
