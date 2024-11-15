@@ -11,3 +11,18 @@ document.getElementById("run-btn").addEventListener("click", () => {
   // Load the content into the iframe
   output.src = URL.createObjectURL(blob);
 });
+
+document.getElementById("fullscreen-btn").addEventListener("click", () => {
+  const output = document.getElementById("output");
+
+  // Request fullscreen mode for the iframe
+  if (output.requestFullscreen) {
+    output.requestFullscreen();
+  } else if (output.mozRequestFullScreen) {
+    output.mozRequestFullScreen(); // For Firefox
+  } else if (output.webkitRequestFullscreen) {
+    output.webkitRequestFullscreen(); // For Safari and Chrome
+  } else if (output.msRequestFullscreen) {
+    output.msRequestFullscreen(); // For IE/Edge
+  }
+});
