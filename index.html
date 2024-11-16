@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/dracula.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/eclipse.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/lint.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.css">
     <!-- Custom Styles -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -19,6 +21,7 @@
           <button onclick="saveCode()">Save</button>
           <button onclick="loadCode()">Load</button>
           <button onclick="exportCode()">Export</button>
+          <button onclick="syncWithGitHub()">GitHub Sync</button>
           <select id="themeSelector" onchange="changeTheme()">
               <option value="default">Default</option>
               <option value="dracula">Dark</option>
@@ -33,14 +36,17 @@
           <div class="tab active" data-editor="htmlEditor">HTML</div>
           <div class="tab" data-editor="cssEditor">CSS</div>
           <div class="tab" data-editor="jsEditor">JavaScript</div>
+          <div class="tab" data-editor="jsonEditor">JSON</div>
       </div>
       <div class="editor-container">
           <textarea id="htmlEditor"></textarea>
           <textarea id="cssEditor" style="display: none;"></textarea>
           <textarea id="jsEditor" style="display: none;"></textarea>
+          <textarea id="jsonEditor" style="display: none;"></textarea>
       </div>
-      <!-- Preview will be opened in a new tab -->
+      <div id="errorDisplay" class="error-display"></div>
       <iframe id="sandbox" style="display:none;"></iframe>
+      <input type="file" id="fileInput" style="display:none;" multiple />
   </main>
 
   <!-- CodeMirror JS -->
@@ -48,8 +54,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/xml/xml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/json/json.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/lint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/javascript-lint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/lint/json-lint.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/addon/hint/show-hint.min.js"></script>
+  <!-- AI Code Suggestions Script -->
+  <script src="https://cdn.jsdelivr.net/npm/openai-api-browser"></script>
   <!-- Custom Scripts -->
   <script src="script.js" defer></script>
 </body>
